@@ -13,6 +13,13 @@ export class ScoresController {
         return this.scoresService.getTop10GroupA();
     }
 
+    // route: GET /api/scores/report/statistics
+    @Get('report/statistics')
+    getReport() {
+        return this.scoresService.getScoreReport();
+    }
+
+
     // route: GET /api/scores/:sbd
     @Get(':sbd')
     getScoreBySbd(@Param('sbd') sbd: string) {

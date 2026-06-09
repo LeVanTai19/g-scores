@@ -55,4 +55,53 @@ export class ScoresService {
 
         return top10;
     }
+
+    // --- Feature 3: Hàm thống kê phổ điểm tất cả các môn (>= 8 / 6 - 8 / 4 - 6 / <4) ---
+    async getScoreReport() {
+
+        const subjects = [
+            'toan', 'van', 'ngoai_ngu', 
+            'vat_ly', 'hoa_hoc', 'sinh_hoc', 
+            'lich_su', 'dia_ly', 'gdcd'
+        ]
+
+        const report = {}; // object rỗng để lưu kết quả key- value thống kê
+
+        for (const subject of subjects) {
+            
+            // Dùng promise.all để chạy song song 4 truy vấn, 
+            // thay vì await từng truy vấn một sẽ lâu 
+            const [level1, level2, level3, level4] = await Promise.all([
+
+                // lv1: điểm >= 8
+                this.prisma.student.count({ 
+                    where: { [subject]: { gte: 8 } } as any,
+                }),
+
+                // lv2: điểm 6 - 8
+                this.prisma.student.count({
+                    where: { [subject]: { gte: 6, lt: 8} } as any,
+                }),
+
+                // lv3: điểm 4 - 6
+                this.prisma.student.count({
+                    where: { [subject]: { gte: 4, lt: 6} } as any,
+                }),
+
+                // lv4: điểm < 4
+                this.prisma.student.count({
+                    where: { [subject]: {lt: 4} } as any,
+                }),
+            ]);
+
+            report[subject] = {
+                '>=8': level1,
+                '6-8': level2,
+                '4-6': level3,
+                '<4': level4,
+            };
+        }
+
+        return report;
+    }
 }
