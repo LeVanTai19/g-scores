@@ -3,7 +3,7 @@
 A full-stack web application designed to process, search, and visualize the Vietnam National High School Exam scores (2024). Built with focus on **Performance Optimization**, **Big Data Handling (1 Million+ records)**, and **Clean Architecture**.
 
 ## 🌐 Live Demo
-- **Live Application:** [PASTE_YOUR_RENDER_LINK_HERE] *(Please wait a few seconds for the initial load if the server is asleep)*
+- **Live Application:** [https://g-scores-app.onrender.com] *(Please wait a few seconds for the initial load if the server is asleep)*
 - **Database:** Supabase (PostgreSQL)
 
 ## 🛠️ Tech Stack & Architecture
