@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ScoresService } from './scores.service';
+import { SearchScoreDto } from './dto/search-score.dto'; // Import DTO
 
 @Controller('api/scores')
 
@@ -22,8 +23,8 @@ export class ScoresController {
 
     // route: GET /api/scores/:sbd
     @Get(':sbd')
-    getScoreBySbd(@Param('sbd') sbd: string) {
-        return this.scoresService.findBySbd(sbd);
+    getScoreBySbd(@Param() params: SearchScoreDto ) {
+        return this.scoresService.findBySbd(params.sbd); // param truyền vào phải qua ktra của DTO, an toàn rồi mới xuống service
     }
 
 }
