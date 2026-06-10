@@ -1,0 +1,111 @@
+/* Dùng Google Font: rubik */
+body {
+    font-family: 'Rubik', sans-serif;
+    background-color: #f4f9f9; 
+    color: #2d3436;
+}
+
+/* ------- Style cho header ------- */
+
+/* header desktop */
+.header-top {
+    background-color: #17c3b2; /* Màu chủ đạo */
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+/* header mobile */
+.mobile-header {
+    background-color: #17c3b2;
+    padding: 10px 20px;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .header-top { display: none; } /* Ẩn header to trên mobile */
+    .mobile-header { display: flex; justify-content: space-between; align-items: center; }
+}
+
+/* ------- Style cho Sidebar ------- */
+
+.sidebar {
+    min-height: 100vh;
+    background-color: #a8e6cf; /* Mint Pastel */
+    padding-top: 30px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+}
+
+.sidebar .nav-link {
+    color: #2d3436;
+    font-weight: 500;
+    padding: 15px 25px;
+    border-radius: 0 30px 30px 0;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+    background-color: #17c3b2; 
+    color: white;
+}
+
+/* ------- Style cho Main Content ------- */
+
+/* các card nội dung */
+.custom-card {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.card-title {
+    color: #17c3b2;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #a8e6cf;
+    padding-bottom: 10px;
+}
+
+/* nút submit */
+.btn-mint {
+    background-color: #17c3b2;
+    color: white;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    transition: 0.3s;
+}
+.btn-mint:hover {
+    background-color: #139e90;
+    color: white;
+}
+
+/* placeholder */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #a8e6cf; /* Màu mint nhạt */
+}
+
+.empty-state svg {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+/* style "Detailed view of search scores here!"*/
+.empty-state p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #b2bec3;
+}
