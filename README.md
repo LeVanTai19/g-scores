@@ -18,15 +18,25 @@ A full-stack web application designed to process, search, and visualize the Viet
    - Successfully processed and seeded **~1.06 million records** from the raw CSV file.
    - Utilized Node.js `ReadStream` combined with Prisma's `createMany` (Batching) to prevent Out-Of-Memory (OOM) issues and maximize insertion speed.
 
-2. **Ultra-Fast Query Performance:**
+2. **Performance Optimization**
    - **Database Indexing:** Applied Composite Indexes `@@index([toan, vat_ly, hoa_hoc])` to reduce Top 10 Group A query time from ~60s to **< 5s**.
    - **Raw SQL Optimization:** Used `$queryRaw` to push calculation loads to the Database Engine, minimizing network latency.
-   - **Concurrent Processing:** Implemented `Promise.all()` to aggregate score statistics (Chart data) simultaneously, boosting performance by 4x.
+   - **Concurrent Processing:** Implemented `Promise.all()` to aggregate score statistics (Chart data) simultaneously.
 
 3. **Security & Data Integrity:**
    - Implemented `class-validator` (DTOs) to tighten logic and prevent malicious/invalid inputs at the Controller layer.
 
-4. **UX/UI Design:**
+4. **API Endpoints**
+   - Retrieve candidate scores by registration number:  
+     GET /api/scores/:sbd  
+
+   - Retrieve top 10 students in Group A:  
+     GET /api/scores/top/group-a  
+
+   - Retrieve score distribution statistics:  
+     GET /api/scores/report/statistics    
+
+5. **UX/UI Design:**
    - Designed a modern, responsive "Mint Pastel" Dashboard.
    - Implemented Frontend Caching (Flag variables) to prevent redundant API calls when switching tabs.
    - Added loading indicators and error handling messages for a seamless user experience.
