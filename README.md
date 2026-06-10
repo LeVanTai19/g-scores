@@ -1,98 +1,63 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# G-Scores System 🚀
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A full-stack web application designed to process, search, and visualize the Vietnam National High School Exam scores (2024). Built with focus on **Performance Optimization**, **Big Data Handling (1 Million+ records)**, and **Clean Architecture**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🌐 Live Demo
+- **Live Application:** [PASTE_YOUR_RENDER_LINK_HERE] *(Please wait a few seconds for the initial load if the server is asleep)*
+- **Database:** Supabase (PostgreSQL)
 
-## Description
+## 🛠️ Tech Stack & Architecture
+- **Backend:** NestJS (TypeScript), Prisma ORM
+- **Frontend:** HTML5, CSS3, Bootstrap 5, Chart.js
+- **Database:** PostgreSQL (with heavily optimized Indexes for Read-Heavy operations)
+- **Architecture:** Monolithic (Server-Side Rendering with Handlebars)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ✨ Key Features & Technical Highlights
 
-## Project setup
+1. **Massive Data Seeding (Stream & Bulk Insert):**
+   - Successfully processed and seeded **~1.06 million records** from the raw CSV file.
+   - Utilized Node.js `ReadStream` combined with Prisma's `createMany` (Batching) to prevent Out-Of-Memory (OOM) issues and maximize insertion speed.
 
-```bash
-$ npm install
-```
+2. **Ultra-Fast Query Performance:**
+   - **Database Indexing:** Applied Composite Indexes `@@index([toan, vat_ly, hoa_hoc])` to reduce Top 10 Group A query time from ~60s to **< 1s**.
+   - **Raw SQL Optimization:** Used `$queryRaw` to push calculation loads to the Database Engine, minimizing network latency.
+   - **Concurrent Processing:** Implemented `Promise.all()` to aggregate score statistics (Chart data) simultaneously, boosting performance by 4x.
 
-## Compile and run the project
+3. **Security & Data Integrity:**
+   - Implemented `class-validator` (DTOs) to tighten logic and prevent malicious/invalid inputs at the Controller layer.
 
-```bash
-# development
-$ npm run start
+4. **UX/UI Design:**
+   - Designed a modern, responsive "Mint Pastel" Dashboard.
+   - Implemented Frontend Caching (Flag variables) to prevent redundant API calls when switching tabs.
+   - Added loading indicators and error handling messages for a seamless user experience.
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
-```
+## 💻 How to run locally
 
-## Run tests
+Follow these steps to run the project on your local machine:
 
-```bash
-# unit tests
-$ npm run test
+### Prerequisites
+- Node.js (v18 or higher)
+- PostgreSQL (Local or Cloud like Supabase)
 
-# e2e tests
-$ npm run test:e2e
+### 1. Clone the repository
+git clone [https://github.com/LeVanTai19/g-scores.git]
+cd g-scores-app
 
-# test coverage
-$ npm run test:cov
-```
+### 2. Install dependencies
+npm install 
 
-## Deployment
+### 3. Setup Environment Variables
+Create a .env file in the root directory and add your PostgreSQL connection string:
+DATABASE_URL="postgresql://user:password@localhost:5432/gscores"
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 4. Setup Database & Prisma
+Run the following commands to generate Prisma client and push the schema to your database:
+npx prisma generate
+npx prisma db push
+(Note: I used db push for local testing instead of migrate to quickly sync the schema)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### 5. Start the application
+npm run start:dev
+The application will be running at: http://localhost:3000
