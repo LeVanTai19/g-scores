@@ -22,38 +22,24 @@ export class ScoresService {
     }
 
     // --- Feature 2: Hàm lấy top 10 học sinh khối A theo tổng 3 môn (toán lý hóa) ---
+    
+    // TỐI ƯU: lại tốc độ, dùng sql thuần để viết lệnh, giao nhiệm vụ tính tổng và sort cho Postgres 
     async getTop10GroupA() {
-        const students = await this.prisma.student.findMany({
+        const top10 = await this.prisma.$queryRaw<any[]>`
 
-            where: {
-                toan: { not: null },
-                vat_ly: { not: null },
-                hoa_hoc: { not: null },
-            },
-            
-            select: {
-                sbd: true,
-                toan: true,
-                vat_ly: true,
-                hoa_hoc: true,
-            },
-        });
+            SELECT sbd, toan, vat_ly, hoa_hoc, (toan + vat_ly + hoa_hoc) AS "totalScore"
+            FROM "Student"
+            WHERE toan IS NOT NULL AND
+                  vat_ly IS NOT NULL AND
+                  hoa_hoc IS NOT NULL
+            ORDER BY "totalScore" DESC
+            LIMIT 10;
+        `;
 
-        // Tính tổng điểm 3 môn và sort thừ cao xuống thấp, lấy top 10
-        const top10 = students
-            .map((student) => ({
-                sbd: student.sbd,
-                toan: student.toan,
-                vat_ly: student.vat_ly,
-                hoa_hoc: student.hoa_hoc,
-
-                totalScore: student.toan! + student.vat_ly! + student.hoa_hoc!,
-            }))
-
-            .sort((a, b) => b.totalScore - a.totalScore)
-            .slice(0, 10);
-
-        return top10;
+        return top10.map(student =>({
+            ...student,
+            totalScore: Number(student.totalScore) // đảm bảo Posgres trả về kiểu số (đôi khi nó trả về chuỗi cho phép tính)
+        }));
     }
 
     // --- Feature 3: Hàm thống kê phổ điểm tất cả các môn (>= 8 / 6 - 8 / 4 - 6 / <4) ---

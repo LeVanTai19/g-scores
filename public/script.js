@@ -1,4 +1,7 @@
 // ----------- Hàm chuyển tab -----------
+let isTop10Loaded = false;
+let isReportLoaded = false;
+
 function switchTab(tabname, element) {
 
     // Ẩn tất cả các tab
@@ -16,9 +19,9 @@ function switchTab(tabname, element) {
     });
     element.classList.add('active');
 
-    // Tự động gọi API khi click vào 2 tab này
-    if (tabname === 'top10') fetchTop10();
-    if (tabname === 'reports') fetchReport();
+    // kiểm tra trước khi gọi API khi click vào 2 tab này
+    if (tabname === 'top10' && !isTop10Loaded) fetchTop10();
+    if (tabname === 'reports' && !isReportLoaded) fetchReport();
 }
 
 // ----------- feature 1: find student by SBD -----------
@@ -28,9 +31,14 @@ const btnSearch = document.getElementById('btn-search');
 btnSearch.addEventListener('click', async() =>{
     const sbd = inputSbd.value.trim();
 
+    // THÊM MỚI: báo lỗi dưới ô input
+    const errorMsg = document.getElementById('sbd-error-msg');
+    errorMsg.style.display = 'none';
+
     //Validation input
     if (!sbd) {
-        alert ('Please enter a Registration Number!'); 
+        errorMsg.innerText = 'Please enter a Registration Number!';
+        errorMsg.style.display = 'block'; 
         return; 
     }
 
@@ -40,7 +48,8 @@ btnSearch.addEventListener('click', async() =>{
         const data = await response.json();
 
         if (!response.ok) {
-            alert (data.message || 'Student not found!');
+            errorMsg.innerText = data.message || 'Student not found!';
+            errorMsg.style.display = 'block';
             return;
         }
 
@@ -70,6 +79,13 @@ btnSearch.addEventListener('click', async() =>{
 
 // ----------- feature 2: retrive Top 10 students group A -----------
 async function fetchTop10() {
+
+    //THÊM MỚI: thông báo loading
+    const loading = document.getElementById('loading-top10');
+    const tbody = document.getElementById('top10-table-body');
+
+    loading.style.display = 'block'; // hiện loading
+    tbody.innerHTML = '';
     
     try {
         const response = await fetch('/api/scores/top/group-a');
@@ -91,8 +107,12 @@ async function fetchTop10() {
             `;
         });
 
+        isTop10Loaded = true;
+
     } catch (error) {
         console.error('Error fetching top 10:', error);
+    } finally {
+        loading.style.display = 'none';
     }
 }
 
@@ -100,6 +120,11 @@ async function fetchTop10() {
 let myChart = null; // biến toàn cục để lưu đối tượng biểu đồ, khi cần vẽ lại có thể xóa đi 
 
 async function fetchReport() {
+
+    //THÊM MỚI: thông báo loading
+    const loading = document.getElementById('loading-reports');
+    loading.style.display = 'block';
+
     try {
         console.log ("Đang lấy dữ liệu thống kê...");
 
@@ -149,7 +174,11 @@ async function fetchReport() {
             }         
         });
 
+        isReportLoaded = true;
+
     } catch (error) {
         console.error('Error fetching report:', error);
+    } finally {
+        loading.style.display = 'none';
     }
 }

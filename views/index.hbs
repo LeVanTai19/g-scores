@@ -68,6 +68,10 @@
                         <label class="form-label text-muted">Registration Number</label>
                         <div class="d-flex gap-3">
                             <input type="text" id="sbd-input" class="form-control" placeholder="Enter registration number..." style="max-width: 300px;">
+
+                            <!--THÊM MỚI: dòng báo lỗi bên dưới input -->
+                            <div id="sbd-error-msg" class="text-danger mt-2" style="font-size: 13px; display: none;"></div>
+
                             <button id="btn-search" class="btn btn-mint px-4">Submit</button>
                         </div>
                     </div>
@@ -114,9 +118,16 @@
                                         <th class="text-danger fw-bold">Tổng Điểm</th>
                                     </tr>
                                 </thead>
+
                                 <tbody id="top10-table-body">
                                     <!-- Nơi js đổ dữ liệu vào -->
                                 </tbody>
+
+                                <!--THÊM MỚI: thông báo chờ loading -->
+                                <div id="loading-top10" class="text-center text-mint py-4" style="display: none;">
+                                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                                    <span class="ms-2">Data retrieval will take a few seconds, please wait...</span>
+                                </div>
                             </table>
                         </div>
                     </div>
@@ -128,6 +139,13 @@
                         <h5 class="card-title">Score Statistics by Subjects</h5>
                         <!-- Bọc canvas để giới hạn chiều cao -->
                         <div style="height: 400px; width: 100%;">
+
+                            <!--THÊM MỚI: thông báo chờ loading -->
+                            <div id="loading-reports" class="text-center text-mint py-4" style="display: none;">
+                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                <span class="ms-2">Crunching numbers for 1 million records, please wait...</span>
+                            </div>
+
                             <canvas id="scoreChart"></canvas>
                         </div>
                     </div>

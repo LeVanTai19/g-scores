@@ -26,4 +26,7 @@ model Student {
   gdcd      Float?
 
   @@index([sbd]) // đánh index cho số báo danh giúp tìm cho nhanh
+
+  @@index([toan, vat_ly, hoa_hoc]) // THÊM MỚI: cải thiện tốc độ load để lấy top10 
+ 
 }
