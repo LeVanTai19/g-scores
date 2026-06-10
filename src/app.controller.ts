@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Render } from '@nestjs/common';
+
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
 
+  // route: GET / (trang chủ)
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Render('index') // Nestjs sẽ tìm file index.hbs trong thư mục views để render
+  root() {
+    return {};
   }
 }
