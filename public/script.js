@@ -97,6 +97,59 @@ async function fetchTop10() {
 }
 
 // ----------- feature 3: Reports (Chart) -----------
+let myChart = null; // biến toàn cục để lưu đối tượng biểu đồ, khi cần vẽ lại có thể xóa đi 
+
 async function fetchReport() {
-    
+    try {
+        console.log ("Đang lấy dữ liệu thống kê...");
+
+        const response = await fetch('/api/scores/report/statistics');
+        const data = await response.json();
+
+        const subjects = ['toan', 'van', 'ngoai_ngu', 
+                          'vat_ly', 'hoa_hoc', 'sinh_hoc', 
+                          'lich_su', 'dia_ly', 'gdcd'];
+
+        const level1 = []; // >= 8
+        const level2 = []; // 6 - 8
+        const level3 = []; // 4 - 6
+        const level4 = []; // < 4 
+
+        subjects.forEach(sub => {
+            level1.push(data[sub]['>=8']);
+            level2.push(data[sub]['6-8']);
+            level3.push(data[sub]['4-6']);
+            level4.push(data[sub]['<4']);
+        })
+
+        // Vẽ biểu đồ
+        const ctx = document.getElementById('scoreChart').getContext('2d');
+
+        if (myChart) {
+            myChart.destroy();
+        }
+
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Toán', 'Ngữ Văn', 'Ngoại Ngữ', 'Vật Lý', 'Hóa Học', 'Sinh Học', 'Lịch Sử', 'Địa Lý', 'GDCD'],
+                datasets: [
+                    { label: '>= 8 điểm', data: level1, backgroundColor: '#17c3b2' }, 
+                    { label: '6 -> 8 điểm', data: level2, backgroundColor: '#a8e6cf' }, 
+                    { label: '4 -> 6 điểm', data: level3, backgroundColor: '#fdcb6e' }, 
+                    { label: '< 4 điểm', data: level4, backgroundColor: '#ff7675' }    
+                ]
+            },
+            options: {
+                reponsive: true,
+                maintainAspectRatio: false, // cho biểu đồ khớp với khung chứa
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }         
+        });
+
+    } catch (error) {
+        console.error('Error fetching report:', error);
+    }
 }
